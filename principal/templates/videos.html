@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Videos - Cursos en Línea{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+    <h2 class="page-title mb-3 mb-md-0">
+        <i class="fas fa-play-circle me-2"></i>Biblioteca de Videos
+    </h2>
+    <a href="{% url 'agregar_video' %}" class="btn btn-success">
+        <i class="fas fa-plus me-2"></i>Agregar Video
+    </a>
+</div>
+
+{% if videos %}
+<div class="row g-4">
+    {% for video in videos %}
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card video-card h-100" data-video-url="{{ video.url_video }}">
+            <div class="position-relative">
+                <img src="https://via.placeholder.com/400x200/f1c40f/2c3e50?text=Cargando..." 
+                     alt="{{ video.titulo }}" 
+                     class="video-thumbnail">
+                <div class="video-overlay">
+                    <i class="fas fa-play"></i>
+                </div>
+                <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge bg-dark">
+                        <i class="fas fa-clock me-1"></i>{{ video.duracion }}
+                    </span>
+                </div>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-truncate" title="{{ video.titulo }}">
+                    {{ video.titulo }}
+                </h5>
+                <p class="card-text text-muted small mb-2">
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    {{ video.fecha_subida|date:"d/m/Y" }}
+                </p>
+                <p class="card-text flex-grow-1">
+                    {{ video.descripcion|truncatewords:20 }}
+                </p>
+                <div class="mt-auto">
+                    <a href="{{ video.url_video }}" target="_blank" class="btn btn-primary w-100">
+                        <i class="fas fa-external-link-alt me-2"></i>Ver Video
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="mt-4 text-center">
+    <p class="text-muted">
+        <i class="fas fa-info-circle me-2"></i>
+        Total de videos: {{ videos|length }}
+    </p>
+</div>
+
+{% else %}
+<div class="text-center py-5">
+    <div class="mb-4">
+        <i class="fas fa-video fa-5x text-muted"></i>
+    </div>
+    <h4 class="text-muted">No hay videos disponibles</h4>
+    <p class="text-muted">Comienza agregando tu primer video al catálogo</p>
+    <a href="{% url 'agregar_video' %}" class="btn btn-primary btn-lg">
+        <i class="fas fa-plus me-2"></i>Agregar Primer Video
+    </a>
+</div>
+{% endif %}
+{% endblock %}
